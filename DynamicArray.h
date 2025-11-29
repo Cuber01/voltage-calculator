@@ -3,6 +3,7 @@
 
 #include <format>
 #include <ostream>
+#include <cassert>
 
 template<typename T>
 class DynamicArray {
@@ -21,13 +22,14 @@ public:
 
     void Add(T value);
     T Get(int index);
-    void WriteValue(int index, T value);
+    void Set(int index, T value);
 
 };
 
 
 template<typename T>
 DynamicArray<T>::DynamicArray(int size) {
+    assert(size >= 0);
     Array = new T[size];
     availableLength = size;
 }
@@ -43,12 +45,14 @@ void DynamicArray<T>::Add(T value) {
 }
 
 template<typename T>
-void DynamicArray<T>::WriteValue(int index, T value) {
+void DynamicArray<T>::Set(int index, T value) {
+    assert(index < Length);
     Array[index] = value;
 }
 
 template<typename T>
 T DynamicArray<T>::Get(int index) {
+    assert(index < Length);
     return Array[index];
 }
 
