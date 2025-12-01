@@ -23,26 +23,18 @@ void InputReader::Read(const std::string& filename) {
         switch (ch) {
             case 'R': {
                 ResistorData& resistorData = readResistor(file);
-                double currentValue = AdmittanceMatrix->TryGet(resistorData.NodeA, resistorData.NodeA);
-                AdmittanceMatrix->ResizeAndSet(resistorData.NodeA-1, resistorData.NodeA-1, currentValue + (1/resistorData.Resistance) );
-
-                currentValue = AdmittanceMatrix->TryGet(resistorData.NodeB, resistorData.NodeB);
-                AdmittanceMatrix->ResizeAndSet(resistorData.NodeB-1, resistorData.NodeB-1, currentValue + (1/resistorData.Resistance) );
-
-                currentValue = AdmittanceMatrix->TryGet(resistorData.NodeA, resistorData.NodeB);
-                AdmittanceMatrix->ResizeAndSet(resistorData.NodeA-1, resistorData.NodeB-1, currentValue -(1/resistorData.Resistance) );
-
-                currentValue = AdmittanceMatrix->TryGet(resistorData.NodeB, resistorData.NodeA);
-                AdmittanceMatrix->ResizeAndSet(resistorData.NodeB-1, resistorData.NodeA-1, currentValue -(1/resistorData.Resistance) );
-
+                addToAdmMatrix(resistorData.NodeA, resistorData.NodeA, resistorData.Resistance);
+                addToAdmMatrix(resistorData.NodeB, resistorData.NodeB, resistorData.Resistance);
+                addToAdmMatrix(resistorData.NodeA, resistorData.NodeB, -resistorData.Resistance);
+                addToAdmMatrix(resistorData.NodeB, resistorData.NodeA, -resistorData.Resistance);
                 delete &resistorData;
                 break;
             }
 
             case 'S': {
-                // const SourceData& sourceData = readSource(file);
-                // VoltageVector->ResizeAndSet(0, sourceData.Node - 1, sourceData.Voltage);
-                // delete &sourceData;
+                const SourceData& sourceData = readSource(file);
+                VoltageVector->ResizeAndSet(0, sourceData.Node - 1, sourceData.Voltage);
+                delete &sourceData;
                 break;
             }
 
@@ -120,4 +112,8 @@ bool InputReader::isAlpha(const char c)
     return (c >= 'a' && c <= 'z') ||
            (c >= 'A' && c <= 'Z') ||
            c == '_';
+}
+
+void InputReader::addToAdmMatrix(int x, int y, double resistance) const {
+    AdmittanceMatrix->ResizeAndSet(x-1, y-1, AdmittanceMatrix->TryGet(x, y) + (1/resistance));
 }
