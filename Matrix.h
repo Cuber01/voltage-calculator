@@ -80,7 +80,7 @@ T DynamicMatrix<T>::Get(int x, int y) {
 
 template<typename T>
 T DynamicMatrix<T>::TryGet(int x, int y) {
-    if(y < PtrArray->Length && x < PtrArray[y].Length) {
+    if(y >= PtrArray->Length || x >= PtrArray->Get(y)->Length) {
         return T {};
     }
     return PtrArray->Get(y)->Get(x);

@@ -23,17 +23,17 @@ void InputReader::Read(const std::string& filename) {
         switch (ch) {
             case 'R': {
                 ResistorData& resistorData = readResistor(file);
-                double currentValue = VoltageVector->TryGet(resistorData.NodeA, resistorData.NodeA);
-                VoltageVector->ResizeAndSet(resistorData.NodeA, resistorData.NodeA, currentValue + (1/resistorData.Resistance) );
-
-                currentValue = VoltageVector->TryGet(resistorData.NodeB, resistorData.NodeB);
-                VoltageVector->ResizeAndSet(resistorData.NodeB, resistorData.NodeB, currentValue + (1/resistorData.Resistance) );
-
-                currentValue = VoltageVector->TryGet(resistorData.NodeA, resistorData.NodeB);
-                VoltageVector->ResizeAndSet(resistorData.NodeA, resistorData.NodeB, currentValue -(1/resistorData.Resistance) );
-
-                currentValue = VoltageVector->TryGet(resistorData.NodeB, resistorData.NodeA);
-                VoltageVector->ResizeAndSet(resistorData.NodeB, resistorData.NodeA, currentValue -(1/resistorData.Resistance) );
+                // double currentValue = AdmittanceMatrix->TryGet(resistorData.NodeA, resistorData.NodeA);
+                // AdmittanceMatrix->ResizeAndSet(resistorData.NodeA, resistorData.NodeA, currentValue + (1/resistorData.Resistance) );
+                //
+                // currentValue = AdmittanceMatrix->TryGet(resistorData.NodeB, resistorData.NodeB);
+                // AdmittanceMatrix->ResizeAndSet(resistorData.NodeB, resistorData.NodeB, currentValue + (1/resistorData.Resistance) );
+                //
+                // currentValue = AdmittanceMatrix->TryGet(resistorData.NodeA, resistorData.NodeB);
+                // AdmittanceMatrix->ResizeAndSet(resistorData.NodeA, resistorData.NodeB, currentValue -(1/resistorData.Resistance) );
+                //
+                // currentValue = AdmittanceMatrix->TryGet(resistorData.NodeB, resistorData.NodeA);
+                // AdmittanceMatrix->ResizeAndSet(resistorData.NodeB, resistorData.NodeA, currentValue -(1/resistorData.Resistance) );
 
                 delete &resistorData;
                 break;
@@ -41,7 +41,7 @@ void InputReader::Read(const std::string& filename) {
 
             case 'S': {
                 const SourceData& sourceData = readSource(file);
-                VoltageVector->ResizeAndSet(0, sourceData.Node, sourceData.Voltage);
+                VoltageVector->ResizeAndSet(0, sourceData.Node - 1, sourceData.Voltage);
                 delete &sourceData;
                 break;
             }
