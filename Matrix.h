@@ -60,7 +60,7 @@ template<typename T>
 void DynamicMatrix<T>::AddEmptyRows(int amount, int size) {
     assert(size > 0);
     while (amount > 0) {
-        AddRow(new DynamicArray<T>(size));
+        AddRow(new DynamicArray<T>(size, true));
         amount--;
     }
 

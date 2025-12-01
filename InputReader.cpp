@@ -24,16 +24,16 @@ void InputReader::Read(const std::string& filename) {
             case 'R': {
                 ResistorData& resistorData = readResistor(file);
                 double currentValue = AdmittanceMatrix->TryGet(resistorData.NodeA, resistorData.NodeA);
-                AdmittanceMatrix->ResizeAndSet(resistorData.NodeA, resistorData.NodeA, currentValue + (1/resistorData.Resistance) );
+                AdmittanceMatrix->ResizeAndSet(resistorData.NodeA-1, resistorData.NodeA-1, currentValue + (1/resistorData.Resistance) );
 
                 currentValue = AdmittanceMatrix->TryGet(resistorData.NodeB, resistorData.NodeB);
-                AdmittanceMatrix->ResizeAndSet(resistorData.NodeB, resistorData.NodeB, currentValue + (1/resistorData.Resistance) );
+                AdmittanceMatrix->ResizeAndSet(resistorData.NodeB-1, resistorData.NodeB-1, currentValue + (1/resistorData.Resistance) );
 
                 currentValue = AdmittanceMatrix->TryGet(resistorData.NodeA, resistorData.NodeB);
-                AdmittanceMatrix->ResizeAndSet(resistorData.NodeA, resistorData.NodeB, currentValue -(1/resistorData.Resistance) );
+                AdmittanceMatrix->ResizeAndSet(resistorData.NodeA-1, resistorData.NodeB-1, currentValue -(1/resistorData.Resistance) );
 
                 currentValue = AdmittanceMatrix->TryGet(resistorData.NodeB, resistorData.NodeA);
-                AdmittanceMatrix->ResizeAndSet(resistorData.NodeB, resistorData.NodeA, currentValue -(1/resistorData.Resistance) );
+                AdmittanceMatrix->ResizeAndSet(resistorData.NodeB-1, resistorData.NodeA-1, currentValue -(1/resistorData.Resistance) );
 
                 delete &resistorData;
                 break;

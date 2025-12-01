@@ -19,7 +19,7 @@ public:
     int Length = 0;
     T* Array;
 
-    explicit DynamicArray(int size);
+    explicit DynamicArray(int size, bool filledWithZeros = false);
     ~DynamicArray();
 
     void Add(T value);
@@ -31,10 +31,16 @@ public:
 
 
 template<typename T>
-DynamicArray<T>::DynamicArray(int size) {
+DynamicArray<T>::DynamicArray(int size, bool filledWithZeros) {
     assert(size > 0);
     Array = new T[size];
     AvailableLength = size;
+
+    if (filledWithZeros) {
+        for (int i = 0; i < size; i++) {
+            Add(0);
+        }
+    }
 }
 
 template<typename T>
@@ -103,8 +109,11 @@ inline std::ostream& operator<<(std::ostream& os, DynamicArray<double>& array)
 {
     os << "[ ";
     for (int i = 0; i < array.Length; i++) {
+        if (array.Get(i) != 0)
+            os << "\e[32m";
+
         os << formatDouble(array.Get(i), 6, 6);
-        os << " ";
+        os << " \e[0m";
     }
     os << " ]";
 
