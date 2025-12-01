@@ -92,12 +92,18 @@ void DynamicArray<T>::grow() {
 }
 
 
-template<typename T>
-std::ostream& operator<<(std::ostream& os, DynamicArray<T>& array)
+static std::string formatDouble(double value, int minWidth, int maxWidth) {
+    std::string s = std::to_string(value);
+    if (s.size() > maxWidth) s.resize(maxWidth);
+    return std::format("{:>{}}", s, minWidth);
+}
+
+
+inline std::ostream& operator<<(std::ostream& os, DynamicArray<double>& array)
 {
     os << "[ ";
     for (int i = 0; i < array.Length; i++) {
-        os << std::format("{:4}", array.Get(i));
+        os << formatDouble(array.Get(i), 6, 6);
         os << " ";
     }
     os << " ]";
