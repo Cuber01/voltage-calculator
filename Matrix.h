@@ -26,6 +26,7 @@ public:
     T Get(int x, int y);
     DynamicArray<T>* GetRow(int y);
     void Set(int x, int y, T value);
+    void ResizeAndSet(int x, int y, T value);
 };
 
 template<typename T>
@@ -81,6 +82,19 @@ template<typename T>
 void DynamicMatrix<T>::Set(int x, int y, T value) {
     assert(y < Length && x < PtrArray[y].Length);
     PtrArray->Get(y)->Set(x, value);
+}
+
+template<typename T>
+void DynamicMatrix<T>::ResizeAndSet(int x, int y, T value) {
+    if (y < Length) {
+        PtrArray->Get(y)->ResizeAndSet(x, value);
+    }
+    else {
+        while (y != Length-1) {
+            AddEmptyRows(1);
+        }
+        PtrArray->Get(y)->ResizeAndSet(x, value);
+    }
 }
 
 

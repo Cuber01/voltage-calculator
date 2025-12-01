@@ -10,19 +10,22 @@ class DynamicArray {
 private:
     // Space for how many elements is allocated on realloc
     const int spacePerRealloc = 8;
-    int availableLength = 0;
+
 
     void grow();
 
 public:
+    int AvailableLength = 0;
     int Length = 0;
     T* Array;
 
-    DynamicArray(int size);
+    explicit DynamicArray(int size);
+    ~DynamicArray();
 
     void Add(T value);
     T Get(int index);
     void Set(int index, T value);
+    void ResizeAndSet(int index, T value);
 
 };
 
@@ -31,12 +34,17 @@ template<typename T>
 DynamicArray<T>::DynamicArray(int size) {
     assert(size >= 0);
     Array = new T[size];
-    availableLength = size;
+    AvailableLength = size;
+}
+
+template<typename T>
+DynamicArray<T>::~DynamicArray() {
+    delete Array;
 }
 
 template<typename T>
 void DynamicArray<T>::Add(T value) {
-    if (Length+1 > availableLength) {
+    if (Length+1 > AvailableLength) {
         grow();
     }
 
@@ -51,6 +59,19 @@ void DynamicArray<T>::Set(int index, T value) {
 }
 
 template<typename T>
+void DynamicArray<T>::ResizeAndSet(int index, T value) {
+    if (index < Length) {
+        Array[index] = value;
+    }
+    else {
+        while (index != Length-1) {
+            Add(0);
+        }
+        Add(value);
+    }
+}
+
+template<typename T>
 T DynamicArray<T>::Get(int index) {
     assert(index < Length);
     return Array[index];
@@ -59,8 +80,8 @@ T DynamicArray<T>::Get(int index) {
 template<typename T>
 void DynamicArray<T>::grow() {
     T* oldArray = Array;
-    availableLength = Length + spacePerRealloc;
-    T* newArray = new T[availableLength];
+    AvailableLength = Length + spacePerRealloc;
+    T* newArray = new T[AvailableLength];
 
     for (int i = 0; i < Length; i++) {
         newArray[i] = oldArray[i];

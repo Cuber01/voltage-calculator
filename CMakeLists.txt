@@ -5,4 +5,8 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(CurrentAnalysis main.cpp
         DynamicArray.cpp
-        DynamicArray.h)
+        DynamicArray.h
+        Matrix.cpp
+        Matrix.h
+        InputReader.cpp
+        InputReader.h)
