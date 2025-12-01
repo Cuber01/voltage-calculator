@@ -13,7 +13,6 @@ class DynamicMatrix {
     void checkAndReadjust(DynamicArray<T>* row);
 
 public:
-    int Length = 0;
     int LengthX = 0;
 
     DynamicMatrix(int sizeX, int sizeY);
@@ -24,6 +23,7 @@ public:
     void AddRow(DynamicArray<T>* row);
     void AddEmptyRows(int amount, int size);
     T Get(int x, int y);
+    T TryGet(int x, int y);
     DynamicArray<T>* GetRow(int y);
     void Set(int x, int y, T value);
     void ResizeAndSet(int x, int y, T value);
@@ -39,7 +39,7 @@ DynamicMatrix<T>::DynamicMatrix(int sizeX, int sizeY) {
 
 template<typename T>
 DynamicMatrix<T>::~DynamicMatrix() {
-    for (int i = 0; i < Length; i++) {
+    for (int i = 0; i < PtrArray->Length; i++) {
         delete PtrArray->Array[i];
     }
     delete PtrArray;
@@ -47,18 +47,18 @@ DynamicMatrix<T>::~DynamicMatrix() {
 
 template<typename T>
 void DynamicMatrix<T>::AddRow(DynamicArray<T>* row) {
-    if (Length+1 > PtrArray->AvailableLength) {
+    if (PtrArray->Length+1 > PtrArray->AvailableLength) {
         grow();
     }
 
     PtrArray->Add(row);
-    Length++;
 
     checkAndReadjust(row);
 }
 
 template<typename T>
 void DynamicMatrix<T>::AddEmptyRows(int amount, int size) {
+    assert(size > 0);
     while (amount > 0) {
         AddRow(new DynamicArray<T>(size));
         amount--;
@@ -68,30 +68,38 @@ void DynamicMatrix<T>::AddEmptyRows(int amount, int size) {
 
 template<typename T>
 DynamicArray<T>* DynamicMatrix<T>::GetRow(int y) {
-    assert(y < Length);
+    assert(y < PtrArray->Length);
     return PtrArray->Get(y);
 }
 
 template<typename T>
 T DynamicMatrix<T>::Get(int x, int y) {
-    assert(y < Length && x < PtrArray[y].Length);
+    assert(y < PtrArray->Length && x < PtrArray[y].Length);
+    return PtrArray->Get(y)->Get(x);
+}
+
+template<typename T>
+T DynamicMatrix<T>::TryGet(int x, int y) {
+    if(y < PtrArray->Length && x < PtrArray[y].Length) {
+        return T {};
+    }
     return PtrArray->Get(y)->Get(x);
 }
 
 template<typename T>
 void DynamicMatrix<T>::Set(int x, int y, T value) {
-    assert(y < Length && x < PtrArray[y].Length);
+    assert(y < PtrArray->Length && x < PtrArray[y].Length);
     PtrArray->Get(y)->Set(x, value);
 }
 
 template<typename T>
 void DynamicMatrix<T>::ResizeAndSet(int x, int y, T value) {
-    if (y < Length) {
+    if (y < PtrArray->Length) {
         PtrArray->Get(y)->ResizeAndSet(x, value);
     }
     else {
-        while (y != Length-1) {
-            AddEmptyRows(1);
+        while (y != PtrArray->Length -1) {
+            AddEmptyRows(1,x+1);
         }
         PtrArray->Get(y)->ResizeAndSet(x, value);
     }
@@ -101,20 +109,20 @@ void DynamicMatrix<T>::ResizeAndSet(int x, int y, T value) {
 template<typename T>
 void DynamicMatrix<T>::grow() {
     DynamicArray< DynamicArray<T>* >* oldArray = PtrArray;
-    int newLength = Length + spacePerRealloc;
+    int newLength = PtrArray->Length + spacePerRealloc;
     auto* newArray = new DynamicArray< DynamicArray<T>* >(newLength);
 
-    for (int i = 0; i < Length; i++) {
+    for (int i = 0; i < PtrArray->Length; i++) {
         newArray->Add(oldArray->Get(i));
     }
 
-    delete[] oldArray;
+    delete oldArray;
     PtrArray = newArray;
 }
 
 template<typename T>
 void DynamicMatrix<T>::readjustRowsSize() {
-    for (int i = 0; i < Length; i++) {
+    for (int i = 0; i < PtrArray->Length; i++) {
         DynamicArray<T>* row = GetRow(i);
         while (row->Length < LengthX) {
             row->Add(0);
@@ -137,7 +145,7 @@ template<typename T>
 std::ostream& operator<<(std::ostream& os, DynamicMatrix<T>& matrix)
 {
     os << "{ ";
-    for (int i = 0; i < matrix.Length; i++) {
+    for (int i = 0; i < matrix.PtrArray->Length; i++) {
         os << "\n";
         os << *matrix.GetRow(i);
     }

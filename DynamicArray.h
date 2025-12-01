@@ -32,7 +32,7 @@ public:
 
 template<typename T>
 DynamicArray<T>::DynamicArray(int size) {
-    assert(size >= 0);
+    assert(size > 0);
     Array = new T[size];
     AvailableLength = size;
 }
@@ -87,7 +87,7 @@ void DynamicArray<T>::grow() {
         newArray[i] = oldArray[i];
     }
 
-    delete[] oldArray;
+    delete oldArray;
     Array = newArray;
 }
 
@@ -98,6 +98,7 @@ std::ostream& operator<<(std::ostream& os, DynamicArray<T>& array)
     os << "[ ";
     for (int i = 0; i < array.Length; i++) {
         os << std::format("{:4}", array.Get(i));
+        os << " ";
     }
     os << " ]";
 

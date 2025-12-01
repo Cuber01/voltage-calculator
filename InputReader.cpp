@@ -1,9 +1,7 @@
 #include "InputReader.h"
 
-#include <complex>
 #include <iostream>
 #include <fstream>
-#include <vector>
 #include <string>
 
 InputReader::InputReader() {
@@ -18,20 +16,35 @@ InputReader::~InputReader() {
 
 void InputReader::Read(const std::string& filename) {
     std::ifstream file(filename);
-    assert(!file.is_open());
+    assert(file.is_open());
 
-    std::vector<std::string> lines;
-    std::string line;
     char ch;
     while (file.get(ch)) {
         switch (ch) {
-            case 'R':
-                readResistor(file);
-                break;
+            case 'R': {
+                ResistorData& resistorData = readResistor(file);
+                double currentValue = VoltageVector->TryGet(resistorData.NodeA, resistorData.NodeA);
+                VoltageVector->ResizeAndSet(resistorData.NodeA, resistorData.NodeA, currentValue + (1/resistorData.Resistance) );
 
-            case 'S':
-                readSource(file);
+                currentValue = VoltageVector->TryGet(resistorData.NodeB, resistorData.NodeB);
+                VoltageVector->ResizeAndSet(resistorData.NodeB, resistorData.NodeB, currentValue + (1/resistorData.Resistance) );
+
+                currentValue = VoltageVector->TryGet(resistorData.NodeA, resistorData.NodeB);
+                VoltageVector->ResizeAndSet(resistorData.NodeA, resistorData.NodeB, currentValue -(1/resistorData.Resistance) );
+
+                currentValue = VoltageVector->TryGet(resistorData.NodeB, resistorData.NodeA);
+                VoltageVector->ResizeAndSet(resistorData.NodeB, resistorData.NodeA, currentValue -(1/resistorData.Resistance) );
+
+                delete &resistorData;
                 break;
+            }
+
+            case 'S': {
+                const SourceData& sourceData = readSource(file);
+                VoltageVector->ResizeAndSet(0, sourceData.Node, sourceData.Voltage);
+                delete &sourceData;
+                break;
+            }
 
             default:
                 break;
@@ -69,7 +82,7 @@ int InputReader::parseInt(std::ifstream &file) {
     while (isDigit(file.peek())) {
         file.get(ch);
         returnVal *= 10;
-        returnVal += ch;
+        returnVal += (ch - '0');
     }
 
     return returnVal;
@@ -96,7 +109,6 @@ void InputReader::consume(std::ifstream &file, char c) {
         file.get();
     }
 }
-
 
 bool InputReader::isDigit(const char c)
 {

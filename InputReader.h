@@ -3,15 +3,6 @@
 #include "Matrix.h"
 
 class InputReader {
-    DynamicMatrix<double>* AdmittanceMatrix = nullptr;
-    DynamicMatrix<double>* VoltageVector = nullptr;
-
-    InputReader();
-    ~InputReader();
-
-    static void Read(const std::string &filename);
-
-private:
     typedef struct ResistorData {
         int NodeA = -1;
         int NodeB = -1;
@@ -31,6 +22,15 @@ private:
     static void consume(std::ifstream& file, char c);
     static bool isDigit(char c);
     static bool isAlpha(char c);
+
+public:
+    DynamicMatrix<double>* AdmittanceMatrix = nullptr;
+    DynamicMatrix<double>* VoltageVector = nullptr;
+
+    InputReader();
+    ~InputReader();
+
+    void Read(const std::string &filename);
 };
 
 
