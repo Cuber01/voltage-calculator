@@ -16,6 +16,7 @@ public:
     int LengthX = 0;
 
     DynamicMatrix(int sizeX, int sizeY);
+    DynamicMatrix(std::initializer_list<std::initializer_list<T>> list);
     ~DynamicMatrix();
 
     DynamicArray< DynamicArray<T>* >* PtrArray = nullptr;
@@ -27,6 +28,7 @@ public:
     DynamicArray<T>* GetRow(int y);
     void Set(int x, int y, T value);
     void ResizeAndSet(int x, int y, T value);
+    int GetLengthY();
 };
 
 template<typename T>
@@ -35,6 +37,18 @@ DynamicMatrix<T>::DynamicMatrix(int sizeX, int sizeY) {
     PtrArray = new DynamicArray< DynamicArray<T>* >(sizeY);
     LengthX = sizeX;
     AddEmptyRows(sizeY, sizeX);
+}
+
+template<typename T>
+DynamicMatrix<T>::DynamicMatrix(std::initializer_list<std::initializer_list<T>> list) {
+    PtrArray = new DynamicArray< DynamicArray<T>* >(list.size());
+    LengthX = list[0].size();
+
+    for (int i = 0; i < list.size(); i++) {
+        std::initializer_list<T> row = list[i];
+        assert(row.size() == LengthX);
+        AddRow(new DynamicArray<T>(list));
+    }
 }
 
 template<typename T>
@@ -105,7 +119,6 @@ void DynamicMatrix<T>::ResizeAndSet(int x, int y, T value) {
     }
 }
 
-
 template<typename T>
 void DynamicMatrix<T>::grow() {
     DynamicArray< DynamicArray<T>* >* oldArray = PtrArray;
@@ -142,6 +155,12 @@ void DynamicMatrix<T>::checkAndReadjust(DynamicArray<T>* row) {
 }
 
 template<typename T>
+int DynamicMatrix<T>::GetLengthY() {
+    return PtrArray->Length;
+}
+
+
+template<typename T>
 std::ostream& operator<<(std::ostream& os, DynamicMatrix<T>& matrix)
 {
     os << "{ ";
@@ -152,6 +171,35 @@ std::ostream& operator<<(std::ostream& os, DynamicMatrix<T>& matrix)
     os << "\n}";
 
     return os;
+}
+
+
+inline DynamicMatrix<double>* operator*(DynamicMatrix<double>& a, DynamicMatrix<double>& b)
+{
+    assert(a.LengthX == b.GetLengthY() && "These matrixes cannot be multiplied.");
+
+    int multMax = a.LengthX;
+    int Xmax = b.LengthX;
+    int Ymax = a.GetLengthY();
+
+    DynamicMatrix<double>* result = new DynamicMatrix<double>(Xmax, Ymax);
+
+    // Iterate over entire result table
+    for (int x = 0; x < Xmax; x++) {
+        for (int y = 0; y < Ymax; y++) {
+
+            double value = 0;
+
+            // Iterate over every relevant number in a and b to calculate value
+            for (int currentMultIndex = 0; currentMultIndex < multMax; currentMultIndex++) {
+                value += a.Get(x,y-currentMultIndex) * b.Get(x-currentMultIndex,y);
+            }
+
+            result->Set(x, y, value);
+        }
+    }
+
+    return result;
 }
 
 

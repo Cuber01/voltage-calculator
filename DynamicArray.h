@@ -20,6 +20,7 @@ public:
     T* Array;
 
     explicit DynamicArray(int size, bool filledWithZeros = false);
+    DynamicArray(std::initializer_list<T> list);
     ~DynamicArray();
 
     void Add(T value);
@@ -40,6 +41,16 @@ DynamicArray<T>::DynamicArray(int size, bool filledWithZeros) {
         for (int i = 0; i < size; i++) {
             Add(0);
         }
+    }
+}
+
+template<typename T>
+DynamicArray<T>::DynamicArray(std::initializer_list<T> list) {
+    Array = new T[list.size()];
+    AvailableLength = list.size();
+
+    for (int i = 0; i < list.size(); i++) {
+        Add(list[i]);
     }
 }
 
@@ -104,7 +115,6 @@ static std::string formatDouble(double value, int minWidth, int maxWidth) {
     return std::format("{:>{}}", s, minWidth);
 }
 
-
 inline std::ostream& operator<<(std::ostream& os, DynamicArray<double>& array)
 {
     os << "[ ";
@@ -119,6 +129,7 @@ inline std::ostream& operator<<(std::ostream& os, DynamicArray<double>& array)
 
     return os;
 }
+
 
 
 
