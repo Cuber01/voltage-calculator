@@ -10,7 +10,17 @@ int main() {
     // std::cout << *input->AdmittanceMatrix << std::endl;
     // delete input;
 
-    auto* arr = new DynamicArray<double>
+    //auto* arr = new DynamicMatrix<double>({{1,2,3},{4,5,6}});
+
+    DynamicMatrix<double> m = {{{1,2}, {3,4}}};
+    DynamicMatrix<double> d = {{{1,2,3}, {4,5,6}}};
+    std::cout << m;
+    std::cout << d;
+
+
+
+    DynamicMatrix<double> md = m*d;
+    std::cout << md;
 
     return 0;
 }

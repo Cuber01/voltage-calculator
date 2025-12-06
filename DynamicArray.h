@@ -49,8 +49,8 @@ DynamicArray<T>::DynamicArray(std::initializer_list<T> list) {
     Array = new T[list.size()];
     AvailableLength = list.size();
 
-    for (int i = 0; i < list.size(); i++) {
-        Add(list[i]);
+    for (T value : list) {
+        Add(value);
     }
 }
 

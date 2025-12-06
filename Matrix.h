@@ -42,12 +42,11 @@ DynamicMatrix<T>::DynamicMatrix(int sizeX, int sizeY) {
 template<typename T>
 DynamicMatrix<T>::DynamicMatrix(std::initializer_list<std::initializer_list<T>> list) {
     PtrArray = new DynamicArray< DynamicArray<T>* >(list.size());
-    LengthX = list[0].size();
+    LengthX = list.begin()->size();
 
-    for (int i = 0; i < list.size(); i++) {
-        std::initializer_list<T> row = list[i];
-        assert(row.size() == LengthX);
-        AddRow(new DynamicArray<T>(list));
+    for (std::initializer_list<T> value : list) {
+        assert(value.size() == LengthX);
+        AddRow(new DynamicArray<T>(value));
     }
 }
 
@@ -88,7 +87,7 @@ DynamicArray<T>* DynamicMatrix<T>::GetRow(int y) {
 
 template<typename T>
 T DynamicMatrix<T>::Get(int x, int y) {
-    assert(y < PtrArray->Length && x < PtrArray[y].Length);
+    //assert(y < PtrArray->Length && x < PtrArray[y].Length);
     return PtrArray->Get(y)->Get(x);
 }
 
@@ -102,7 +101,7 @@ T DynamicMatrix<T>::TryGet(int x, int y) {
 
 template<typename T>
 void DynamicMatrix<T>::Set(int x, int y, T value) {
-    assert(y < PtrArray->Length && x < PtrArray[y].Length);
+    //assert(y < PtrArray->Length && x < PtrArray[y].Length);
     PtrArray->Get(y)->Set(x, value);
 }
 
@@ -174,7 +173,7 @@ std::ostream& operator<<(std::ostream& os, DynamicMatrix<T>& matrix)
 }
 
 
-inline DynamicMatrix<double>* operator*(DynamicMatrix<double>& a, DynamicMatrix<double>& b)
+inline DynamicMatrix<double> operator*(DynamicMatrix<double>& a, DynamicMatrix<double>& b)
 {
     assert(a.LengthX == b.GetLengthY() && "These matrixes cannot be multiplied.");
 
@@ -192,14 +191,14 @@ inline DynamicMatrix<double>* operator*(DynamicMatrix<double>& a, DynamicMatrix<
 
             // Iterate over every relevant number in a and b to calculate value
             for (int currentMultIndex = 0; currentMultIndex < multMax; currentMultIndex++) {
-                value += a.Get(x,y-currentMultIndex) * b.Get(x-currentMultIndex,y);
+                value += a.Get(currentMultIndex,y)*b.Get(x,currentMultIndex);
             }
 
             result->Set(x, y, value);
         }
     }
 
-    return result;
+    return *result;
 }
 
 
