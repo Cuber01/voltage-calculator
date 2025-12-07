@@ -3,6 +3,7 @@
 
 #include "DynamicArray.h"
 #include <cassert>
+#include <iostream>
 
 template<typename T>
 class DynamicMatrix {
@@ -87,7 +88,8 @@ DynamicArray<T>* DynamicMatrix<T>::GetRow(int y) {
 
 template<typename T>
 T DynamicMatrix<T>::Get(int x, int y) {
-    //assert(y < PtrArray->Length && x < PtrArray[y].Length);
+    assert(y < PtrArray->Length && x < PtrArray->Get(y)->Length);
+
     return PtrArray->Get(y)->Get(x);
 }
 
@@ -101,7 +103,8 @@ T DynamicMatrix<T>::TryGet(int x, int y) {
 
 template<typename T>
 void DynamicMatrix<T>::Set(int x, int y, T value) {
-    //assert(y < PtrArray->Length && x < PtrArray[y].Length);
+    assert(y < PtrArray->Length && x < PtrArray->Get(y)->Length);
+
     PtrArray->Get(y)->Set(x, value);
 }
 

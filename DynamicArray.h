@@ -4,6 +4,7 @@
 #include <format>
 #include <ostream>
 #include <cassert>
+#include <iostream>
 
 template<typename T>
 class DynamicArray {
@@ -52,6 +53,7 @@ DynamicArray<T>::DynamicArray(std::initializer_list<T> list) {
     for (T value : list) {
         Add(value);
     }
+    std::cout << Length << std::endl;
 }
 
 template<typename T>
