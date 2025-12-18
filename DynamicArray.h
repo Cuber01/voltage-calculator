@@ -83,7 +83,7 @@ void DynamicArray<T>::ResizeAndSet(int index, T value) {
         Array[index] = value;
     }
     else {
-        while (index != Length-1) {
+        while (index != Length) {
             Add(0);
         }
         Add(value);

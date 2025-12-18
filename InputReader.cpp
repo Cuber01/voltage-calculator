@@ -5,12 +5,12 @@
 #include <string>
 
 InputReader::InputReader() {
-    VoltageVector = new DynamicMatrix<double>(1, 1);
+    CurrentVector = new DynamicMatrix<double>(1, 1);
     AdmittanceMatrix = new DynamicMatrix<double>(1, 1);
 }
 
 InputReader::~InputReader() {
-    delete VoltageVector;
+    delete CurrentVector;
     delete AdmittanceMatrix;
 }
 
@@ -33,7 +33,7 @@ void InputReader::Read(const std::string& filename) {
 
             case 'S': {
                 const SourceData& sourceData = readSource(file);
-                VoltageVector->ResizeAndSet(0, sourceData.Node - 1, sourceData.Voltage);
+                CurrentVector->ResizeAndSet(0, sourceData.Node - 1, sourceData.Voltage);
                 delete &sourceData;
                 break;
             }
@@ -44,6 +44,11 @@ void InputReader::Read(const std::string& filename) {
     }
     file.close();
 
+    for (int y = 0; y < AdmittanceMatrix->GetLengthY(); y++) {
+        if (CurrentVector->TryGet(0,y) == 0) {
+            CurrentVector->ResizeAndSet(0,y,0);
+        }
+    }
 
 }
 
@@ -115,5 +120,5 @@ bool InputReader::isAlpha(const char c)
 }
 
 void InputReader::addToAdmMatrix(int x, int y, double resistance) const {
-    AdmittanceMatrix->ResizeAndSet(x-1, y-1, AdmittanceMatrix->TryGet(x, y) + (1/resistance));
+    AdmittanceMatrix->ResizeAndSet(x-1, y-1, AdmittanceMatrix->TryGet(x-1, y-1) + (1/resistance));
 }

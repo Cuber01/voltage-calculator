@@ -1,26 +1,20 @@
 #include <iostream>
 #include "DynamicArray.h"
+#include "EquationSolver.h"
 #include "InputReader.h"
 #include "Matrix.h"
 
 int main() {
-    // auto* input = new InputReader();
-    // input->Read("input.txt");
-    // std::cout << *input->VoltageVector << std::endl;
-    // std::cout << *input->AdmittanceMatrix << std::endl;
-    // delete input;
+     auto* input = new InputReader();
+     auto* EquationSolver = new ::EquationSolver<double>();
 
-    //auto* arr = new DynamicMatrix<double>({{1,2,3},{4,5,6}});
+     input->Read("input.txt");
+     std::cout << *input->CurrentVector << std::endl;
+     std::cout << *input->AdmittanceMatrix << std::endl;
+     input->AdmittanceMatrix->AddColumn(input->CurrentVector);
 
-    DynamicMatrix<double> m = {{{1,2}, {3,4}}};
-    DynamicMatrix<double> d = {{{1,2,3}, {4,5,6}}};
-    std::cout << m;
-    std::cout << d;
+     std::cout << *input->AdmittanceMatrix << std::endl;
 
-
-
-    DynamicMatrix<double> md = m*d;
-    std::cout << md;
-
-    return 0;
+     delete input;
+     return 0;
 }

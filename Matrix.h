@@ -22,6 +22,7 @@ public:
 
     DynamicArray< DynamicArray<T>* >* PtrArray = nullptr;
 
+    void AddColumn(DynamicMatrix<T>* column);
     void AddRow(DynamicArray<T>* row);
     void AddEmptyRows(int amount, int size);
     T Get(int x, int y);
@@ -57,6 +58,16 @@ DynamicMatrix<T>::~DynamicMatrix() {
         delete PtrArray->Array[i];
     }
     delete PtrArray;
+}
+
+template<typename T>
+void DynamicMatrix<T>::AddColumn(DynamicMatrix<T> *column) {
+    assert(column->GetLengthY() == GetLengthY());
+    assert(column->LengthX == 1);
+
+    for (int y = 0; y < GetLengthY(); y++) {
+        ResizeAndSet(LengthX, y, column->Get(0,y));
+    }
 }
 
 template<typename T>

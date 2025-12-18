@@ -23,11 +23,9 @@ class InputReader {
     static inline bool isAlpha(char c);
     inline void addToAdmMatrix(int x, int y, double value) const;
 
-
-
 public:
     DynamicMatrix<double>* AdmittanceMatrix = nullptr;
-    DynamicMatrix<double>* VoltageVector = nullptr;
+    DynamicMatrix<double>* CurrentVector = nullptr;
 
     InputReader();
     ~InputReader();

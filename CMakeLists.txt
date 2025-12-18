@@ -8,4 +8,6 @@ add_executable(CurrentAnalysis main.cpp
         Matrix.cpp
         Matrix.h
         InputReader.cpp
-        InputReader.h)
+        InputReader.h
+        EquationSolver.cpp
+        EquationSolver.h)
