@@ -14,6 +14,11 @@ int main() {
      input->AdmittanceMatrix->AddColumn(input->CurrentVector);
 
      std::cout << *input->AdmittanceMatrix << std::endl;
+     input->AdmittanceMatrix->PopRow(); // Uziemienie
+     std::cout << *input->AdmittanceMatrix << std::endl;
+
+     EquationSolver->GaussElimination(input->AdmittanceMatrix);
+     std::cout << *input->AdmittanceMatrix << std::endl;
 
      delete input;
      return 0;

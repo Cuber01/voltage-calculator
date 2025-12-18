@@ -24,6 +24,7 @@ public:
 
     void AddColumn(DynamicMatrix<T>* column);
     void AddRow(DynamicArray<T>* row);
+    void PopRow();
     void AddEmptyRows(int amount, int size);
     T Get(int x, int y);
     T TryGet(int x, int y);
@@ -68,6 +69,7 @@ void DynamicMatrix<T>::AddColumn(DynamicMatrix<T> *column) {
     for (int y = 0; y < GetLengthY(); y++) {
         ResizeAndSet(LengthX, y, column->Get(0,y));
     }
+    LengthX++;
 }
 
 template<typename T>
@@ -79,6 +81,12 @@ void DynamicMatrix<T>::AddRow(DynamicArray<T>* row) {
     PtrArray->Add(row);
 
     checkAndReadjust(row);
+}
+
+template<typename T>
+void DynamicMatrix<T>::PopRow() {
+    delete GetRow(PtrArray->Length-1);
+    PtrArray->Length = PtrArray->Length-1;
 }
 
 template<typename T>
