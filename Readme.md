@@ -33,4 +33,4 @@ Where:
 - amount of resistance can be either an int or double with dot notation
 - this is a resistor between node A and node B
 
-Do note that f the circuit doesn't make sense the results won't make sense either.
+Do note that if the circuit doesn't make sense the results won't make sense either. Use `sample_input.txt` for examples.
