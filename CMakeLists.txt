@@ -3,7 +3,7 @@ project(CurrentAnalysis)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(CurrentAnalysis main.cpp
+add_executable(VoltageCalculator main.cpp
         DynamicArray.h
         Matrix.h
         InputReader.cpp

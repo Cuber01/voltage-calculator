@@ -1,5 +1,6 @@
 #include "InputReader.h"
 
+#include <filesystem>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -15,8 +16,14 @@ InputReader::~InputReader() {
 }
 
 void InputReader::Read(const std::string& filename) {
+    if (!std::filesystem::exists(filename)) {
+        std::cout << "File does not exist" << std::endl;
+        exit(1);
+    }
+
     std::ifstream file(filename);
     assert(file.is_open());
+
 
     char ch;
     while (file.get(ch)) {
