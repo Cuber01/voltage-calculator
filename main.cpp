@@ -4,12 +4,17 @@
 #include "InputReader.h"
 #include "Matrix.h"
 
-int main() {
+int main(int argc, char** argv) {
+     if (argc != 2) {
+          std::cout << "Wrong number of arguments. Should be one." << std::endl;
+          exit(1);
+     }
+
      auto* input = new InputReader();
      auto* equationSolver = new ::EquationSolver<double>();
 
      // Read input
-     input->Read("input.txt");
+     input->Read(argv[1]);
      std::cout << "Vector of currents:" << std::endl;
      std::cout << *input->CurrentVector << std::endl;
      std::cout << "Admittance matrix:" << std::endl;

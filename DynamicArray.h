@@ -121,10 +121,11 @@ inline std::ostream& operator<<(std::ostream& os, DynamicArray<double>& array)
 {
     os << "[ ";
     for (int i = 0; i < array.Length; i++) {
-        os << " ";
+        if (array.Get(i) != 0)
+            os << "\e[0;32m";
 
         os << formatDouble(array.Get(i), 6, 6);
-        os << " ";
+        os << " \e[0m";
     }
     os << " ]";
 
