@@ -32,3 +32,5 @@ Where:
 - node indexes are an ints >= 1
 - amount of resistance can be either an int or double with dot notation
 - this is a resistor between node A and node B
+
+Do note that f the circuit doesn't make sense the results won't make sense either.
