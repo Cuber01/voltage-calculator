@@ -65,8 +65,6 @@ void EquationSolver<T>::GaussElimination(DynamicMatrix<T> *expandedMatrix) {
 }
 
 
-
-
 template<typename T>
 DynamicMatrix<T>* EquationSolver<T>::BackSubstitution(DynamicMatrix<T> *gaussedMatrix) {
     int rows = gaussedMatrix->GetLengthY();
@@ -75,7 +73,7 @@ DynamicMatrix<T>* EquationSolver<T>::BackSubstitution(DynamicMatrix<T> *gaussedM
 
     // Going from bottom to top
     for (int y = rows - 1; y >= 0; y--) {
-        T sum = 0;
+        double sum = 0;
 
         // Sum already calculated unknowns
         for (int x = y + 1; x < rows; x++)
@@ -83,8 +81,8 @@ DynamicMatrix<T>* EquationSolver<T>::BackSubstitution(DynamicMatrix<T> *gaussedM
             sum += gaussedMatrix->Get(x, y) * solution->Get(0,x);
         }
 
-        T b_y = gaussedMatrix->Get(cols - 1, y); // wyraz wolny (intercept)
-        T a_yy = gaussedMatrix->Get(y, y); // współczynnik na przekątnej (coefficient on the diagonal)
+        double b_y = gaussedMatrix->Get(cols - 1, y); // wyraz wolny (intercept)
+        double a_yy = gaussedMatrix->Get(y, y); // współczynnik na przekątnej (coefficient on the diagonal)
 
         solution->Set(0,y, (b_y - sum) / a_yy);
     }
