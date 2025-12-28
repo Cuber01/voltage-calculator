@@ -22,7 +22,8 @@ S <node-index> <amount-of-current>
 ```
 Where:
 - node index is an int >= 1
-- amount of current can be either an int or double with dot notation
+- amount of current can be either an int or double with .x notation
+- current is in Ampere
 
 **Resistor**
 ```
@@ -30,7 +31,8 @@ R <node-A-index> <node-B-index> <amount-of-resistance>
 ```
 Where:
 - node indexes are an ints >= 1
-- amount of resistance can be either an int or double with dot notation
+- amount of resistance can be either an int or double with .x notation
 - this is a resistor between node A and node B
+- resistance is in Ohm
 
 Do note that if the circuit doesn't make sense the results won't make sense either. Use `sample_input.txt` for examples.
