@@ -24,17 +24,23 @@ int main(int argc, char** argv) {
      DynamicMatrix<double>* equationMatrix = input->AdmittanceMatrix;
      equationMatrix->AddColumn(input->CurrentVector);
 
-     // Uziemienie
+     // Grounding
      equationMatrix->PopRow();
      std::cout << "Equation matrix after grounding the last node:" << std::endl;
      std::cout << *equationMatrix << std::endl;
 
      // Do gauss elimination
-     equationSolver->GaussElimination(equationMatrix);
+     EquationSolver<double>::GaussElimination(equationMatrix);
      std::cout << "After gauss elimination:" << std::endl;
      std::cout << *equationMatrix << std::endl;
 
      // Solve gauss eliminated matrix
+     /* Equation we use is
+     Y*V = I
+     I - vector of currents
+     V - vector of voltages
+     Y - admittance matrix
+     */
      DynamicMatrix<double>* voltageVector = equationSolver->BackSubstitution(equationMatrix);
      voltageVector->AddEmptyRows(1,1);
      std::cout << "Voltage vector (with grounded node included):" << std::endl;
