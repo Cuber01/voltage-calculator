@@ -17,13 +17,11 @@ InputReader::~InputReader() {
 
 void InputReader::Read(const std::string& filename) {
     if (!std::filesystem::exists(filename)) {
-        std::cout << "File does not exist" << std::endl;
+        std::cout << "File does not exist." << std::endl;
         exit(1);
     }
 
     std::ifstream file(filename);
-    assert(file.is_open());
-
 
     char ch;
     while (file.get(ch)) {
@@ -45,7 +43,13 @@ void InputReader::Read(const std::string& filename) {
                 break;
             }
 
+            case '\n':
+                line++;
+                break;
+
             default:
+                std::cout << "Unexpected character '" << ch << "' at line " << line << std::endl;
+                exit(1);
                 break;
         }
     }
@@ -80,6 +84,11 @@ InputReader::SourceData & InputReader::readSource(std::ifstream &file) {
 }
 
 int InputReader::parseInt(std::ifstream &file) {
+    if (!isDigit(file.peek())) {
+        std::cout << "Expected digit in line " << line << std::endl;
+        exit(1);
+    }
+
     int returnVal = 0;
 
     char ch;
@@ -108,9 +117,11 @@ double InputReader::parseDouble(std::ifstream &file) {
 }
 
 void InputReader::consume(std::ifstream &file, char c) {
-    assert(file.peek() == c);
     if (file.peek() == c) {
         file.get();
+    } else {
+        std::cout << "Expected char '" << c << "' in line " << line << std::endl;
+        exit(1);
     }
 }
 

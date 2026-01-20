@@ -16,12 +16,14 @@ class InputReader {
 
     ResistorData& readResistor(std::ifstream& file);
     SourceData& readSource(std::ifstream& file);
-    static int parseInt(std::ifstream& file);
-    static double parseDouble(std::ifstream& file);
-    static void consume(std::ifstream& file, char c);
-    static inline bool isDigit(char c);
-    static inline bool isAlpha(char c);
+    int parseInt(std::ifstream& file);
+    double parseDouble(std::ifstream& file);
+    void consume(std::ifstream& file, char c);
+    inline bool isDigit(char c);
+    inline bool isAlpha(char c);
     inline void addToAdmMatrix(int x, int y, double value) const;
+
+    int line = 1;
 
 public:
     DynamicMatrix<double>* AdmittanceMatrix = nullptr;
