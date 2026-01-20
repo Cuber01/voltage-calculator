@@ -132,6 +132,21 @@ inline std::ostream& operator<<(std::ostream& os, DynamicArray<double>& array)
     return os;
 }
 
+inline std::ostream& operator<<(std::ostream& os, DynamicArray<int>& array)
+{
+    os << "[ ";
+    for (int i = 0; i < array.Length; i++) {
+        if (array.Get(i) != 0)
+            os << "\e[0;32m";
+
+        os << array.Get(i);
+        os << " \e[0m";
+    }
+    os << " ]";
+
+    return os;
+}
+
 
 
 

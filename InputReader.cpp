@@ -8,16 +8,18 @@
 InputReader::InputReader() {
     CurrentVector = new DynamicMatrix<double>(1, 1);
     AdmittanceMatrix = new DynamicMatrix<double>(1, 1);
+    nodeArray = new DynamicArray<int>(5);
 }
 
 InputReader::~InputReader() {
     delete CurrentVector;
     delete AdmittanceMatrix;
+    delete nodeArray;
 }
 
 void InputReader::Read(const std::string& filename) {
     if (!std::filesystem::exists(filename)) {
-        std::cout << "File does not exist." << std::endl;
+        std::cout << "Error: File does not exist." << std::endl;
         exit(1);
     }
 
@@ -32,6 +34,8 @@ void InputReader::Read(const std::string& filename) {
                 addToAdmMatrix(resistorData.NodeB, resistorData.NodeB, resistorData.Resistance);
                 addToAdmMatrix(resistorData.NodeA, resistorData.NodeB, -resistorData.Resistance);
                 addToAdmMatrix(resistorData.NodeB, resistorData.NodeA, -resistorData.Resistance);
+                nodeArray->Add(resistorData.NodeA);
+                nodeArray->Add(resistorData.NodeB);
                 delete &resistorData;
                 break;
             }
@@ -39,6 +43,7 @@ void InputReader::Read(const std::string& filename) {
             case 'S': {
                 const SourceData& sourceData = readSource(file);
                 CurrentVector->ResizeAndSet(0, sourceData.Node - 1, sourceData.Voltage);
+                nodeArray->Add(sourceData.Node);
                 delete &sourceData;
                 break;
             }
@@ -48,7 +53,7 @@ void InputReader::Read(const std::string& filename) {
                 break;
 
             default:
-                std::cout << "Unexpected character '" << ch << "' at line " << line << std::endl;
+                std::cout << "Error: Unexpected character '" << ch << "' at line " << line << std::endl;
                 exit(1);
                 break;
         }
@@ -71,6 +76,17 @@ InputReader::ResistorData & InputReader::readResistor(std::ifstream &file) {
     resistor.NodeB = parseInt(file);
     consume(file, ' ');
     resistor.Resistance = parseDouble(file);
+
+    if (resistor.NodeA <= 0 || resistor.NodeB <= 0) {
+        std::cout << "Error: Node index should be >= 0. At line " << line << std::endl;
+        exit(1);
+    }
+
+    if (resistor.Resistance <= 0) {
+        std::cout << "Error: Resistance has to be > 0. At line " << line << std::endl;
+        exit(1);
+    }
+
     return resistor;
 }
 
@@ -80,12 +96,18 @@ InputReader::SourceData & InputReader::readSource(std::ifstream &file) {
     source.Node = parseInt(file);
     consume(file, ' ');
     source.Voltage = parseDouble(file);
+
+    if (source.Node <= 0) {
+        std::cout << "Error: Node index should be >= 0. At line " << line << std::endl;
+        exit(1);
+    }
+
     return source;
 }
 
 int InputReader::parseInt(std::ifstream &file) {
     if (!isDigit(file.peek())) {
-        std::cout << "Expected digit in line " << line << std::endl;
+        std::cout << "Error: Expected digit in line " << line << std::endl;
         exit(1);
     }
 
@@ -120,7 +142,7 @@ void InputReader::consume(std::ifstream &file, char c) {
     if (file.peek() == c) {
         file.get();
     } else {
-        std::cout << "Expected char '" << c << "' in line " << line << std::endl;
+        std::cout << "Error: Expected char '" << c << "' in line " << line << std::endl;
         exit(1);
     }
 }
@@ -140,3 +162,25 @@ bool InputReader::isAlpha(const char c)
 void InputReader::addToAdmMatrix(int x, int y, double resistance) const {
     AdmittanceMatrix->ResizeAndSet(x-1, y-1, AdmittanceMatrix->TryGet(x-1, y-1) + (1/resistance));
 }
+
+void InputReader::checkNodeIndexes() {
+    for (int i = 0; i < nodeArray->Length-1; i++) {
+        for (int j = 0; j < nodeArray->Length-1; j++) {
+            if (nodeArray->Get(j) > nodeArray->Get(j+1)) {
+                int old = nodeArray->Get(j+1);
+                nodeArray->Set(j+1, nodeArray->Get(j));
+                nodeArray->Set(j, old);
+            }
+        }
+    }
+
+    int currentMax = 0;
+    for (int i = 0; i < nodeArray->Length; i++) {
+        if (nodeArray->Get(i) != currentMax && nodeArray->Get(i) != currentMax+1) {
+            std::cout << "Error: There is a node with an index of " << nodeArray->Get(i) << ", but there is no node with an index of "  << currentMax+1 << std::endl;
+            exit(1);
+        }
+        currentMax = nodeArray->Get(i);
+    }
+}
+

@@ -29,8 +29,10 @@
   <component name="ChangeListManager">
     <list default="true" id="c39a742a-f2b4-4c5c-acb1-f602a7b5fd6f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DynamicArray.h" beforeDir="false" afterPath="$PROJECT_DIR$/DynamicArray.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/InputReader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/InputReader.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/InputReader.h" beforeDir="false" afterPath="$PROJECT_DIR$/InputReader.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sample_input.txt" beforeDir="false" afterPath="$PROJECT_DIR$/sample_input.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,7 +107,7 @@
       <workItem from="1767005316039" duration="1040000" />
       <workItem from="1767809631967" duration="883000" />
       <workItem from="1768033811031" duration="1258000" />
-      <workItem from="1768918897912" duration="1391000" />
+      <workItem from="1768918897912" duration="3761000" />
     </task>
     <servers />
   </component>

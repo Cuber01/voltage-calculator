@@ -23,6 +23,9 @@ class InputReader {
     inline bool isAlpha(char c);
     inline void addToAdmMatrix(int x, int y, double value) const;
 
+    void checkNodeIndexes();
+
+    DynamicArray<int>* nodeArray;
     int line = 1;
 
 public:
