@@ -66,6 +66,12 @@ void InputReader::Read(const std::string& filename) {
         }
     }
 
+    checkNodeIndexes();
+    if (CurrentVector->GetLengthY() > AdmittanceMatrix->GetLengthY()) {
+        std::cout << "Error: Some sources are not connected to any resistors." << std::endl;
+        exit(1);
+    }
+
 }
 
 InputReader::ResistorData & InputReader::readResistor(std::ifstream &file) {
@@ -163,7 +169,7 @@ void InputReader::addToAdmMatrix(int x, int y, double resistance) const {
     AdmittanceMatrix->ResizeAndSet(x-1, y-1, AdmittanceMatrix->TryGet(x-1, y-1) + (1/resistance));
 }
 
-void InputReader::checkNodeIndexes() {
+void InputReader::checkNodeIndexes() const {
     for (int i = 0; i < nodeArray->Length-1; i++) {
         for (int j = 0; j < nodeArray->Length-1; j++) {
             if (nodeArray->Get(j) > nodeArray->Get(j+1)) {
