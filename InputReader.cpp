@@ -149,7 +149,6 @@ double InputReader::parseFraction(std::ifstream &file) {
     return returnVal;
 }
 
-
 double InputReader::parseDouble(std::ifstream &file) {
     double mainPart = parseInt(file);
 
