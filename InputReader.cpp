@@ -134,11 +134,11 @@ double InputReader::parseDouble(std::ifstream &file) {
 
     if (file.peek() == '.') {
         file.get();
-        double decimalPart = parseInt(file);
-        while (decimalPart > 0) {
-            decimalPart /= 10;
+        double fractionPart = parseInt(file);
+        while (fractionPart > 1) {
+            fractionPart /= 10;
         }
-        mainPart += decimalPart;
+        mainPart += fractionPart;
     }
 
     return mainPart;
