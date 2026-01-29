@@ -132,7 +132,7 @@ int InputReader::parseInt(std::ifstream &file) {
 
 double InputReader::parseFraction(std::ifstream &file) {
     if (!isDigit(file.peek())) {
-        std::cout << "Error: Expected digit in line " << line << std::endl;
+        std::cout << "Error: Expected digit after dot in line " << line << std::endl;
         exit(1);
     }
 
