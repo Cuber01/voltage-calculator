@@ -1,5 +1,6 @@
 #include "InputReader.h"
 
+#include <cmath>
 #include <filesystem>
 #include <iostream>
 #include <fstream>
@@ -129,15 +130,32 @@ int InputReader::parseInt(std::ifstream &file) {
     return returnVal;
 }
 
+double InputReader::parseFraction(std::ifstream &file) {
+    if (!isDigit(file.peek())) {
+        std::cout << "Error: Expected digit in line " << line << std::endl;
+        exit(1);
+    }
+
+    double returnVal = 0;
+    int power = 1;
+
+    char ch;
+    while (isDigit(file.peek())) {
+        file.get(ch);
+        returnVal += ((ch - '0') / std::pow(10,power));
+        power++;
+    }
+
+    return returnVal;
+}
+
+
 double InputReader::parseDouble(std::ifstream &file) {
     double mainPart = parseInt(file);
 
     if (file.peek() == '.') {
         file.get();
-        double fractionPart = parseInt(file);
-        while (fractionPart > 1) {
-            fractionPart /= 10;
-        }
+        double fractionPart = parseFraction(file);
         mainPart += fractionPart;
     }
 

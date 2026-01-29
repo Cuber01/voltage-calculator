@@ -18,6 +18,7 @@ class InputReader {
     SourceData& readSource(std::ifstream& file);
     int parseInt(std::ifstream& file);
     double parseDouble(std::ifstream& file);
+    double parseFraction(std::ifstream &file);
     void consume(std::ifstream& file, char c);
     inline bool isDigit(char c);
     inline bool isAlpha(char c);
