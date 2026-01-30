@@ -1,11 +1,6 @@
-//
-// Created by cubeq on 12/18/25.
-//
-
 #ifndef CURRENTANALYSIS_EQUATIONSOLVER_H
 #define CURRENTANALYSIS_EQUATIONSOLVER_H
-#include <math.h>
-
+#include <cmath>
 #include "Matrix.h"
 
 template<typename T>
