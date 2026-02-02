@@ -1,3 +1,8 @@
+# Autor: Jan Englert
+# Grupa: Piątek Nieparzysty
+# Tytuł: Kalkulator napięć
+# Data edycji: 02.02.2026
+
 cmake_minimum_required(VERSION 4.0)
 project(CurrentAnalysis)
 

@@ -1,3 +1,8 @@
+// Autor: Jan Englert
+// Grupa: Piątek Nieparzysty
+// Tytuł: Kalkulator napięć
+// Data edycji: 02.02.2026
+
 #ifndef CURRENTANALYSIS_DYNAMIC_ARRAY_H
 #define CURRENTANALYSIS_DYNAMIC_ARRAY_H
 

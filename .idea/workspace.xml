@@ -31,8 +31,13 @@
   <component name="ChangeListManager">
     <list default="true" id="c39a742a-f2b4-4c5c-acb1-f602a7b5fd6f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DynamicArray.h" beforeDir="false" afterPath="$PROJECT_DIR$/DynamicArray.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EquationSolver.h" beforeDir="false" afterPath="$PROJECT_DIR$/EquationSolver.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/InputReader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/InputReader.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sample_input.txt" beforeDir="false" afterPath="$PROJECT_DIR$/sample_input.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/InputReader.h" beforeDir="false" afterPath="$PROJECT_DIR$/InputReader.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Matrix.h" beforeDir="false" afterPath="$PROJECT_DIR$/Matrix.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -213,6 +218,7 @@
       <workItem from="1769673761056" duration="886000" />
       <workItem from="1769675048080" duration="4270000" />
       <workItem from="1769682284601" duration="2000" />
+      <workItem from="1770037720144" duration="182000" />
     </task>
     <servers />
   </component>
