@@ -10,13 +10,13 @@
 #include "Matrix.h"
 
 int main(int argc, char** argv) {
+     std::cout << "Autor: Jan Englert" << std::endl;
+     std::cout << "Grupa: Piątek nieparzysty" << std::endl;
+
      if (argc != 2) {
           std::cout << "Wrong number of arguments. Should be one." << std::endl;
           exit(1);
      }
-
-     std::cout << "Autor: Jan Englert" << std::endl;
-     std::cout << "Grupa: Piątek nieparzysty" << std::endl;
 
      auto* input = new InputReader();
      auto* equationSolver = new ::EquationSolver<double>();
